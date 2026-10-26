@@ -1,16 +1,23 @@
 {
   "name": "paintsite",
+  "version": "1.0.0",
   "private": true,
-  "description": "Painting business website — React/Vite frontend and Express/MongoDB backend",
+  "type": "module",
   "scripts": {
-    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
-    "dev": "concurrently -n api,web -c blue,magenta \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
-    "build": "npm run build --prefix frontend",
-    "start": "npm start --prefix backend",
-    "seed": "npm run seed --prefix backend",
-    "test": "npm test --prefix backend"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.577.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router": "^7.18.4"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^5.2.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^7.3.7"
   }
 }
