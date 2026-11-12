@@ -1,10 +1,10 @@
-import { Phone } from 'lucide-react';
+
 import { SITE_IMAGES } from '../config/site.js';
 import { useSettings } from '../context/SettingsContext.jsx';
 import { useWhatsApp } from '../hooks/useWhatsApp.js';
 import { telHref } from '../utils/format.js';
 import { Button } from './ui/Button.jsx';
-import { WhatsAppIcon } from './ui/Icons.jsx';
+import { WhatsAppIcon, RingingPhone as Phone } from './ui/Icons.jsx';
 import { Reveal } from './ui/Reveal.jsx';
 import { ResponsiveImage } from './ui/ResponsiveImage.jsx';
 
@@ -35,7 +35,7 @@ export function CtaSection({
             </div>
             {settings.phone && (
               <p className="mt-6 text-navy-200">
-                or call{' '}
+                or call {' '}
                 <a href={telHref(settings.phone)} className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-accent-300">
                   <Phone className="size-4" aria-hidden="true" />
                   {settings.phone}

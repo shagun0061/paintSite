@@ -1,4 +1,5 @@
-import { Check } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
+import { Link } from 'react-router';
 import { CtaSection } from '../components/CtaSection.jsx';
 import { Seo } from '../components/layout/Seo.jsx';
 import { PageHero } from '../components/PageHero.jsx';
@@ -94,12 +95,19 @@ export default function About() {
           />
           <ol className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {PROCESS_STEPS.map((step, i) => (
-              <Reveal as="li" key={step.title} delay={i * 80} className="card relative p-6 pt-10">
+              <Reveal as="li" key={step.title} delay={i * 80} className="group card relative p-6 pt-10 transition duration-300 hover:-translate-y-1 hover:shadow-lift has-focus-visible:ring-2 has-focus-visible:ring-accent-500">
                 <span className="absolute -top-5 left-6 inline-flex size-10 items-center justify-center rounded-full bg-accent-600 font-display text-lg font-semibold text-white shadow-soft">
                   {i + 1}
                 </span>
-                <h3 className="text-xl font-semibold">{step.title}</h3>
+                <h3 className="text-xl font-semibold">
+                  <Link to="/contact?type=quote#enquiry" className="after:absolute after:inset-0 focus-visible:outline-none">
+                    {step.title}
+                  </Link>
+                </h3>
                 <p className="mt-2 leading-relaxed text-navy-600">{step.text}</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-600">
+                  Get started <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </span>
               </Reveal>
             ))}
           </ol>
@@ -127,9 +135,13 @@ export default function About() {
           </div>
           <ul className="grid gap-5 sm:grid-cols-2">
             {BENEFITS.map((b, i) => (
-              <Reveal as="li" key={b.title} delay={i * 60} className="card p-6">
-                <NamedIcon name={b.icon} className="size-8 text-accent-600" />
-                <h3 className="mt-4 font-sans text-lg font-bold">{b.title}</h3>
+              <Reveal as="li" key={b.title} delay={i * 60} className="group card relative p-6 transition duration-300 hover:-translate-y-1 hover:shadow-lift has-focus-visible:ring-2 has-focus-visible:ring-accent-500">
+                <NamedIcon name={b.icon} className="size-8 text-accent-600 transition-transform group-hover:scale-110" />
+                <h3 className="mt-4 font-sans text-lg font-bold">
+                  <Link to="/services" className="after:absolute after:inset-0 focus-visible:outline-none">
+                    {b.title}
+                  </Link>
+                </h3>
                 <p className="mt-1.5 leading-relaxed text-navy-600">{b.text}</p>
               </Reveal>
             ))}

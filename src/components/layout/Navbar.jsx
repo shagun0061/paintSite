@@ -1,4 +1,4 @@
-import { Clock, MapPin, Menu, Phone, X } from 'lucide-react';
+import { Clock, MapPin, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router';
 import { NAV_LINKS } from '../../config/site.js';
@@ -7,7 +7,7 @@ import { useWhatsApp } from '../../hooks/useWhatsApp.js';
 import { cn } from '../../utils/cn.js';
 import { telHref } from '../../utils/format.js';
 import { Button } from '../ui/Button.jsx';
-import { WhatsAppIcon } from '../ui/Icons.jsx';
+import { WhatsAppIcon, RingingPhone as Phone } from '../ui/Icons.jsx';
 import { Logo } from './Logo.jsx';
 
 function TopBar() {
@@ -89,8 +89,8 @@ export function Navbar() {
           scrolled ? 'border-navy-100 shadow-soft' : 'border-transparent',
         )}
       >
-        <div className="container-page flex h-18 items-center justify-between gap-4">
-          <Logo className="min-w-0" />
+        <div className="container-page flex h-18 items-center justify-between gap-4 sm:h-20">
+          <Logo className="min-w-0" imgClassName="h-14 sm:h-[4.25rem]" />
 
           <nav aria-label="Main" className="hidden lg:block">
             <ul className="flex items-center gap-1">

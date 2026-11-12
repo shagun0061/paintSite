@@ -1,10 +1,12 @@
 import { useSearchParams } from 'react-router';
-import { ContactDetails, MapEmbed } from '../components/ContactDetails.jsx';
+import { ContactInfoCard, ContactOptions } from '../components/ContactDetails.jsx';
 import { EnquiryForm } from '../components/EnquiryForm.jsx';
 import { Seo } from '../components/layout/Seo.jsx';
 import { PageHero } from '../components/PageHero.jsx';
 import { SITE_IMAGES } from '../config/site.js';
 import { useSettings } from '../context/SettingsContext.jsx';
+
+const STEPS = ['Fill in your details', 'Press Send in WhatsApp or email', 'We call you to book a free site visit'];
 
 export default function Contact() {
   const { settings } = useSettings();
@@ -21,31 +23,50 @@ export default function Contact() {
       <PageHero
         eyebrow="Contact"
         title="Get your free painting quote"
-        description="Fill in the form and we'll get back to you to arrange a free site visit — or message us on WhatsApp for a quicker reply."
+        description="Call, WhatsApp or fill in the form, whichever suits you. Quotes are free and there's no obligation."
         image={SITE_IMAGES.contact}
         breadcrumb={[{ label: 'Contact' }]}
       />
 
-      <section className="section">
-        <div className="container-page grid gap-12 lg:grid-cols-5 lg:gap-16">
-          <div className="min-w-0 lg:col-span-2">
-            <h2 className="text-2xl font-semibold">Contact details</h2>
-            <div className="mt-6">
-              <ContactDetails />
-            </div>
-          </div>
-          <div id="enquiry" className="min-w-0 scroll-mt-28 lg:col-span-3">
-            <div className="card p-6 sm:p-8">
-              <h2 className="text-2xl font-semibold">Send us your enquiry</h2>
-              <p className="mt-2 mb-6 text-navy-600">Fields marked * are required.</p>
-              <EnquiryForm defaultType={type} defaultService={service} />
-            </div>
+      {/* Step 1: choose how to get in touch */}
+      <section className="bg-beige-50 pt-14 pb-16 sm:pt-16" aria-labelledby="options-title">
+        <div className="container-page">
+          <h2 id="options-title" className="text-center text-2xl font-semibold sm:text-3xl">
+            How would you like to reach us?
+          </h2>
+          <p className="mx-auto mt-2 max-w-xl text-center text-navy-600">Pick the option that's easiest for you.</p>
+          <div className="mt-10">
+            <ContactOptions />
           </div>
         </div>
       </section>
 
-      <section aria-label="Map" className="bg-beige-50">
-        <MapEmbed className="block h-[380px] w-full border-0 grayscale-[30%] sm:h-[460px]" />
+      {/* Step 2: the form + details */}
+      <section className="section">
+        <div className="container-page grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div id="enquiry" className="min-w-0 scroll-mt-28 lg:col-span-8">
+            <div className="card p-6 sm:p-10">
+              <h2 className="text-2xl font-semibold sm:text-3xl">Send us your details</h2>
+              <ol className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-6">
+                {STEPS.map((s, i) => (
+                  <li key={s} className="flex items-center gap-2.5 text-sm font-medium text-navy-700">
+                    <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-accent-100 text-xs font-bold text-accent-700">
+                      {i + 1}
+                    </span>
+                    {s}
+                  </li>
+                ))}
+              </ol>
+              <hr className="my-8 border-navy-100" />
+              <EnquiryForm defaultType={type} defaultService={service} />
+            </div>
+          </div>
+          <aside className="min-w-0 lg:col-span-4">
+            <div className="lg:sticky lg:top-28">
+              <ContactInfoCard />
+            </div>
+          </aside>
+        </div>
       </section>
     </>
   );

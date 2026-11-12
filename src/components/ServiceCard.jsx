@@ -9,7 +9,7 @@ import { ResponsiveImage } from './ui/ResponsiveImage.jsx';
 /** Compact card used on the home page. */
 export function ServiceCard({ service }) {
   return (
-    <article className="group card flex h-full flex-col overflow-hidden transition-shadow duration-300 hover:shadow-lift">
+    <article className="group card relative flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lift has-focus-visible:ring-2 has-focus-visible:ring-accent-500">
       <div className="relative aspect-[16/10] overflow-hidden">
         <ResponsiveImage
           image={service.image}
@@ -25,7 +25,7 @@ export function ServiceCard({ service }) {
         <p className="mt-2 flex-1 leading-relaxed text-navy-600">{service.summary}</p>
         <Link
           to={`/services#${service.slug}`}
-          className="mt-5 inline-flex items-center gap-1.5 font-semibold text-accent-600 hover:text-accent-700"
+          className="mt-5 inline-flex items-center gap-1.5 font-semibold text-accent-600 group-hover:text-accent-700 after:absolute after:inset-0 focus-visible:outline-none"
         >
           Learn more <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
           <span className="sr-only">about {service.title}</span>

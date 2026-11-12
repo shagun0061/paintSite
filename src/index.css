@@ -111,6 +111,145 @@
   transform: none;
 }
 
+/* ---------- Home page motion ---------- */
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes float-y {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -8px;
+  }
+}
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(18px, -14px) scale(1.08);
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.anim-pop {
+  animation: pop-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-float {
+  animation:
+    pop-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both,
+    float-y 5s ease-in-out 1.2s infinite;
+}
+.anim-draw {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: draw-line 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.75s forwards;
+}
+.anim-ken-burns {
+  animation: ken-burns 16s ease-in-out infinite alternate;
+}
+.anim-blob {
+  animation: blob-drift 12s ease-in-out infinite;
+}
+.anim-marquee {
+  animation: marquee 32s linear infinite;
+}
+.marquee:hover .anim-marquee {
+  animation-play-state: paused;
+}
+
+/* Phone "ringing" shake: a quick wiggle, then a pause, repeating. */
+@keyframes phone-ring {
+  0%,
+  40%,
+  100% {
+    transform: rotate(0);
+  }
+  4%,
+  12%,
+  20%,
+  28% {
+    transform: rotate(-16deg);
+  }
+  8%,
+  16%,
+  24%,
+  32% {
+    transform: rotate(16deg);
+  }
+}
+.anim-ring {
+  transform-origin: 50% 50%;
+  animation: phone-ring 2.4s ease-in-out infinite;
+}
+
+/* Location pins hop one after another (set --i per item for the wave). */
+@keyframes pin-hop {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(-5px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+  88% {
+    transform: translateY(-2px);
+  }
+}
+.anim-pin {
+  animation: pin-hop 3.2s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.25s);
+}
+.group:hover .anim-pin {
+  animation-duration: 0.9s;
+  animation-delay: 0s;
+}
+
+/* Reveal variants (combine with .reveal-ready from useReveal) */
+.reveal-ready[data-reveal='zoom'] {
+  transform: scale(0.94);
+}
+.reveal-ready[data-reveal='left'] {
+  transform: translateX(-28px);
+}
+.reveal-ready[data-reveal='right'] {
+  transform: translateX(28px);
+}
+.reveal-ready.revealed[data-reveal] {
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -119,10 +258,15 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
   }
   .reveal-ready {
     opacity: 1;
     transform: none;
+  }
+  .anim-draw {
+    stroke-dashoffset: 0;
   }
 }

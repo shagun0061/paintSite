@@ -9,6 +9,7 @@ import {
   PaintBucket,
   PaintRoller,
   Palette,
+  Phone,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
@@ -19,6 +20,11 @@ const ICONS = { BadgeCheck, Brush, Building2, CalendarCheck, Hammer, HardHat, Ho
 export function NamedIcon({ name, ...props }) {
   const Icon = ICONS[name] || PaintRoller;
   return <Icon aria-hidden="true" {...props} />;
+}
+
+/** Phone icon with a repeating "ringing" shake. Drop-in replacement for lucide's Phone. */
+export function RingingPhone({ className = '', ...props }) {
+  return <Phone className={`anim-ring ${className}`} {...props} />;
 }
 
 /** WhatsApp glyph (lucide has no brand icons for it). */

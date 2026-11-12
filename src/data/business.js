@@ -6,12 +6,15 @@
  * sharing the site. Leave a field empty ('') to hide it.
  */
 export const BUSINESS = {
-  businessName: 'Brush & Beam Painting Co.',
-  tagline: 'Professional residential & commercial painters',
-  logoUrl: '', // e.g. '/images/logo.svg' (file in frontend/public/images). Empty = built-in mark.
+  businessName: 'Anant Painting Services',
+  tagline: 'Interior & exterior, domestic & commercial painting. Quality work at reasonable prices.',
+  // Logo files in public/images/brand. logoUrl is used on light backgrounds (header),
+  // logoUrlOnDark on dark backgrounds (footer). Empty = built-in mark + business name.
+  logoUrl: '/images/brand/logo-dark.png',
+  logoUrlOnDark: '/images/brand/logo.png',
 
-  phone: '+61 403 301 342',
-  email: 'hello@example.com',
+  phone: '0403 301 342',
+  email: 's.dharminder@yahoo.com',
 
   // International format, digits only: country code + number, no +, spaces or dashes.
   whatsappNumber: '61403301342',
@@ -19,18 +22,18 @@ export const BUSINESS = {
     'Hello, I found your painting website and would like to enquire about your services. Please share more details.',
 
   address: {
-    street: '123 Example Street',
-    city: 'Your City',
-    region: 'Your State',
-    postalCode: '00000',
-    country: 'US',
+    street: '19 Shaftsbury Drive',
+    city: 'Mulgrave',
+    region: 'VIC',
+    postalCode: '3170',
+    country: 'Australia',
   },
   geo: { lat: null, lng: null }, // optional, improves local SEO
 
-  serviceAreas: ['Your City', 'North Suburbs', 'Downtown', 'East Side'],
+  serviceAreas: ['Mulgrave', 'Glen Waverley', 'Wheelers Hill', 'Clayton', 'Springvale', 'Noble Park', 'Dandenong', 'Rowville'],
   workingHours: [
-    { days: 'Monday – Friday', hours: '8:00 AM – 6:00 PM' },
-    { days: 'Saturday', hours: '9:00 AM – 2:00 PM' },
+    { days: 'Monday – Friday', hours: '7:00 am – 5:00 pm' },
+    { days: 'Saturday', hours: '8:00 am – 1:00 pm (by appointment)' },
     { days: 'Sunday', hours: 'Closed' },
   ],
 
@@ -43,5 +46,5 @@ export const BUSINESS = {
   social: { facebook: '', instagram: '', youtube: '' },
 
   // Shown on the About page only when filled in. Use accurate numbers.
-  stats: { yearsExperience: 12, projectsCompleted: 450, teamSize: 8 },
+  stats: { yearsExperience: null, projectsCompleted: null, teamSize: null },
 };

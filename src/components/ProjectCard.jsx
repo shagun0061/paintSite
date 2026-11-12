@@ -7,7 +7,7 @@ import { ResponsiveImage } from './ui/ResponsiveImage.jsx';
 export function ProjectCard({ project, headingLevel: H = 'h3' }) {
   const hasBeforeAfter = project.beforeImage?.url && project.afterImage?.url;
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-navy-100 transition-shadow duration-300 hover:shadow-lift">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-navy-100 transition duration-300 hover:-translate-y-1 hover:shadow-lift">
       <div className="relative aspect-[4/3] overflow-hidden bg-beige-100">
         <ResponsiveImage
           image={project.coverImage}

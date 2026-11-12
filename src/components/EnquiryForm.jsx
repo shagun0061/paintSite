@@ -1,4 +1,4 @@
-import { Mail, Phone, Send } from 'lucide-react';
+import { Info, Mail } from 'lucide-react';
 import { useEffect, useId, useState } from 'react';
 import { PROPERTY_TYPES } from '../config/site.js';
 import { useSettings } from '../context/SettingsContext.jsx';
@@ -15,8 +15,8 @@ import { Alert } from './ui/States.jsx';
 const START_OPTIONS = ['As soon as possible', 'Within 2 weeks', 'Within a month', 'In 1–3 months', 'Just planning'];
 
 const TYPES = [
-  { value: 'quote', label: 'Free quote' },
-  { value: 'contact', label: 'General enquiry' },
+  { value: 'quote', label: 'A free quote', hint: 'For a new painting job' },
+  { value: 'contact', label: 'Ask a question', hint: 'Anything else' },
 ];
 
 const emptyForm = (type, service) => ({
@@ -80,15 +80,17 @@ export function EnquiryForm({ defaultType = 'quote', defaultService = '' }) {
       document.getElementById(id(first))?.focus();
       return;
     }
+    const channel = e.nativeEvent?.submitter?.value === 'email' ? 'email' : 'whatsapp';
     const text = composeMessage(values);
     const subject = values.type === 'quote' ? `Quote request – ${values.service}` : `Enquiry – ${values.service}`;
     const links = {
       whatsapp: buildWhatsAppUrl(settings.whatsappNumber, text),
       email: settings.email ? `mailto:${settings.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}` : null,
     };
-    if (links.whatsapp) window.open(links.whatsapp, '_blank', 'noopener');
+    if (channel === 'whatsapp' && links.whatsapp) window.open(links.whatsapp, '_blank', 'noopener');
     else if (links.email) window.location.href = links.email;
-    setSent(links);
+    else if (links.whatsapp) window.open(links.whatsapp, '_blank', 'noopener');
+    setSent({ ...links, used: channel === 'email' && links.email ? 'email' : links.whatsapp ? 'whatsapp' : 'email' });
   }
 
   const isQuote = values.type === 'quote';
@@ -97,21 +99,21 @@ export function EnquiryForm({ defaultType = 'quote', defaultService = '' }) {
   if (sent) {
     return (
       <div className="space-y-5">
-        <Alert tone="success" title={sent.whatsapp ? 'Almost done — press Send in WhatsApp' : 'Almost done — press Send in your email app'}>
+        <Alert tone="success" title={sent.used === 'whatsapp' ? 'Almost done — press Send in WhatsApp' : 'Almost done — press Send in your email app'}>
           <p>
-            We've opened {sent.whatsapp ? 'WhatsApp' : 'your email app'} with your details filled in. Your message reaches us once you
-            press Send there.
+            We've opened {sent.used === 'whatsapp' ? 'WhatsApp' : 'your email app'} with your details filled in. Your message reaches us
+            once you press Send there.
           </p>
         </Alert>
         <div className="flex flex-wrap gap-3">
           {sent.whatsapp && (
             <Button href={sent.whatsapp} external variant="whatsapp" icon={WhatsAppIcon}>
-              Open WhatsApp again
+              {sent.used === 'whatsapp' ? 'Open WhatsApp again' : 'Send via WhatsApp instead'}
             </Button>
           )}
           {sent.email && (
             <Button href={sent.email} variant="outline" icon={Mail}>
-              {sent.whatsapp ? 'Send by email instead' : 'Open email again'}
+              {sent.used === 'email' ? 'Open email again' : 'Send by email instead'}
             </Button>
           )}
           <Button variant="ghost" onClick={() => setSent(null)}>
@@ -125,20 +127,35 @@ export function EnquiryForm({ defaultType = 'quote', defaultService = '' }) {
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-5">
       <fieldset>
-        <legend className="sr-only">Enquiry type</legend>
-        <div className="inline-flex rounded-full bg-navy-50 p-1">
-          {TYPES.map((t) => (
-            <label
-              key={t.value}
-              className={cn(
-                'cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition-colors has-focus-visible:outline-2 has-focus-visible:outline-accent-500',
-                values.type === t.value ? 'bg-white text-navy-900 shadow-sm' : 'text-navy-600 hover:text-navy-900',
-              )}
-            >
-              <input type="radio" name={`${uid}-type`} value={t.value} checked={values.type === t.value} onChange={set('type')} className="sr-only" />
-              {t.label}
-            </label>
-          ))}
+        <legend className="mb-2.5 text-sm font-semibold text-navy-900">What do you need?</legend>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {TYPES.map((t) => {
+            const active = values.type === t.value;
+            return (
+              <label
+                key={t.value}
+                className={cn(
+                  'flex cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-3.5 transition has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-accent-500',
+                  active ? 'border-accent-600 bg-accent-50' : 'border-navy-100 hover:border-navy-200 hover:bg-navy-50/50',
+                )}
+              >
+                <input type="radio" name={`${uid}-type`} value={t.value} checked={active} onChange={set('type')} className="sr-only" />
+                <span
+                  className={cn(
+                    'inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2',
+                    active ? 'border-accent-600' : 'border-navy-300',
+                  )}
+                  aria-hidden="true"
+                >
+                  {active && <span className="size-2.5 rounded-full bg-accent-600" />}
+                </span>
+                <span>
+                  <span className="block font-semibold text-navy-900">{t.label}</span>
+                  <span className="block text-sm text-navy-500">{t.hint}</span>
+                </span>
+              </label>
+            );
+          })}
         </div>
       </fieldset>
 
@@ -208,15 +225,30 @@ export function EnquiryForm({ defaultType = 'quote', defaultService = '' }) {
       </div>
 
       {hasChannel ? (
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-navy-500">
-            {buildWhatsAppUrl(settings.whatsappNumber)
-              ? 'This opens WhatsApp with your details filled in — just press Send.'
-              : 'This opens your email app with your details filled in — just press Send.'}
+        <div className="rounded-2xl bg-beige-50 p-5 sm:p-6">
+          <div className="flex flex-col gap-3 sm:flex-row">
+            {buildWhatsAppUrl(settings.whatsappNumber) && (
+              <Button type="submit" value="whatsapp" variant="whatsapp" size="lg" icon={WhatsAppIcon} className="sm:flex-1">
+                Send via WhatsApp
+              </Button>
+            )}
+            {settings.email && (
+              <Button
+                type="submit"
+                value="email"
+                variant={buildWhatsAppUrl(settings.whatsappNumber) ? 'outline' : 'primary'}
+                size="lg"
+                icon={Mail}
+                className="sm:flex-1"
+              >
+                Send by email
+              </Button>
+            )}
+          </div>
+          <p className="mt-3 flex items-start gap-2 text-sm text-navy-600">
+            <Info className="mt-0.5 size-4 shrink-0 text-navy-400" aria-hidden="true" />
+            Your message opens in WhatsApp or your email app with everything filled in. Just press Send there.
           </p>
-          <Button type="submit" size="lg" icon={buildWhatsAppUrl(settings.whatsappNumber) ? WhatsAppIcon : Send}>
-            {isQuote ? 'Request free quote' : 'Send message'}
-          </Button>
         </div>
       ) : (
         settings.phone && (
@@ -228,24 +260,6 @@ export function EnquiryForm({ defaultType = 'quote', defaultService = '' }) {
             to discuss your project.
           </Alert>
         )
-      )}
-      {buildWhatsAppUrl(settings.whatsappNumber) && settings.phone && (
-        <p className="flex items-center gap-1.5 text-sm text-navy-600">
-          <Phone className="size-4" aria-hidden="true" /> No WhatsApp? Call us on{' '}
-          <a href={telHref(settings.phone)} className="font-semibold text-accent-600 hover:underline">
-            {settings.phone}
-          </a>
-          {settings.email && (
-            <>
-              {' '}
-              or email{' '}
-              <a href={`mailto:${settings.email}`} className="font-semibold text-accent-600 hover:underline">
-                {settings.email}
-              </a>
-            </>
-          )}
-          .
-        </p>
       )}
     </form>
   );

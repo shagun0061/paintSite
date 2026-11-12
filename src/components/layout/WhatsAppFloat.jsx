@@ -1,8 +1,8 @@
-import { Phone } from 'lucide-react';
+
 import { useSettings } from '../../context/SettingsContext.jsx';
 import { useWhatsApp } from '../../hooks/useWhatsApp.js';
 import { telHref } from '../../utils/format.js';
-import { WhatsAppIcon } from '../ui/Icons.jsx';
+import { WhatsAppIcon, RingingPhone as Phone } from '../ui/Icons.jsx';
 
 /** Floating contact button on every public page; falls back to a call button without a WhatsApp number. */
 export function WhatsAppFloat() {
