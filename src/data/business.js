@@ -14,7 +14,7 @@ export const BUSINESS = {
   logoUrlOnDark: '/images/brand/logo.png',
 
   phone: '0403 301 342',
-  email: 's.dharminder@yahoo.com',
+  email: 'anantpaintingservices@gmail.com',
 
   // International format, digits only: country code + number, no +, spaces or dashes.
   whatsappNumber: '61403301342',
@@ -22,10 +22,10 @@ export const BUSINESS = {
     'Hello, I found your painting website and would like to enquire about your services. Please share more details.',
 
   address: {
-    street: '19 Shaftsbury Drive',
-    city: 'Mulgrave',
+    street: '44 Bausch Street',
+    city: 'Berwick',
     region: 'VIC',
-    postalCode: '3170',
+    postalCode: '3806',
     country: 'Australia',
   },
   geo: { lat: null, lng: null }, // optional, improves local SEO
@@ -38,10 +38,10 @@ export const BUSINESS = {
   ],
 
   // From your Google Business Profile: "Share" link and "Ask for reviews" link.
-  googleMapsUrl: '',
+  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=44+Bausch+Street,+Berwick+VIC+3806,+Australia',
   googleReviewUrl: '',
   // Optional: Google Maps → Share → Embed a map → copy only the src="…" URL.
-  googleMapsEmbedUrl: '',
+  googleMapsEmbedUrl: 'https://www.google.com/maps?q=44+Bausch+Street,+Berwick+VIC+3806,+Australia&output=embed',
 
   social: { facebook: '', instagram: '', youtube: '' },
 
