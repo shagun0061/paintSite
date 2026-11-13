@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router';
-import { ContactInfoCard, ContactOptions } from '../components/ContactDetails.jsx';
+import { ContactInfoCard, ContactOptions, ServiceAreasCard } from '../components/ContactDetails.jsx';
 import { EnquiryForm } from '../components/EnquiryForm.jsx';
 import { Seo } from '../components/layout/Seo.jsx';
 import { PageHero } from '../components/PageHero.jsx';
@@ -62,8 +62,9 @@ export default function Contact() {
             </div>
           </div>
           <aside className="min-w-0 lg:col-span-4">
-            <div className="lg:sticky lg:top-28">
+            <div className="space-y-6 lg:sticky lg:top-28">
               <ContactInfoCard />
+              <ServiceAreasCard />
             </div>
           </aside>
         </div>

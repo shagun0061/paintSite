@@ -22,11 +22,11 @@ export const BUSINESS = {
     'Hello, I found your painting website and would like to enquire about your services. Please share more details.',
 
   address: {
-    street: '44 Bausch Street',
-    city: 'Berwick',
-    region: 'VIC',
-    postalCode: '3806',
-    country: 'Australia',
+    street: '',
+    city: '',
+    region: '',
+    postalCode: '',
+    country: '',
   },
   geo: { lat: null, lng: null }, // optional, improves local SEO
 
@@ -38,10 +38,10 @@ export const BUSINESS = {
   ],
 
   // From your Google Business Profile: "Share" link and "Ask for reviews" link.
-  googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=44+Bausch+Street,+Berwick+VIC+3806,+Australia',
+  googleMapsUrl: '',
   googleReviewUrl: '',
   // Optional: Google Maps → Share → Embed a map → copy only the src="…" URL.
-  googleMapsEmbedUrl: 'https://www.google.com/maps?q=44+Bausch+Street,+Berwick+VIC+3806,+Australia&output=embed',
+  googleMapsEmbedUrl: '',
 
   social: { facebook: '', instagram: '', youtube: '' },
 

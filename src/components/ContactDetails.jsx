@@ -1,4 +1,5 @@
-import { ArrowRight, Clock, ExternalLink, Mail, MapPin, MessageSquareText } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowRight, Car, CircleCheck, Clock, ExternalLink, Mail, MapPin, MessageSquareText, Search } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext.jsx';
 import { useWhatsApp } from '../hooks/useWhatsApp.js';
 import { cn } from '../utils/cn.js';
@@ -201,5 +202,154 @@ export function MapEmbed({ className }) {
       className={className}
       allowFullScreen
     />
+  );
+}
+
+/** Decorative "street map" backdrop for the service-areas header. */
+function MapPattern() {
+  return (
+    <svg className="absolute inset-0 size-full" viewBox="0 0 320 140" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <pattern id="sa-dots" width="14" height="14" patternUnits="userSpaceOnUse">
+          <circle cx="1.5" cy="1.5" r="1.2" fill="white" fillOpacity="0.09" />
+        </pattern>
+      </defs>
+      <rect width="320" height="140" fill="url(#sa-dots)" />
+      <g fill="none" stroke="white" strokeOpacity="0.1" strokeWidth="6" strokeLinecap="round">
+        <path d="M-10 100 C 60 80, 110 120, 180 90 S 290 40, 340 60" />
+        <path d="M70 -10 C 80 40, 60 90, 95 150" />
+        <path d="M230 -10 L 250 150" />
+      </g>
+      <path
+        className="anim-draw"
+        d="M24 128 C 90 108, 150 142, 215 120 S 290 104, 304 110"
+        fill="none"
+        stroke="var(--color-accent-400)"
+        strokeWidth="2.5"
+        strokeDasharray="6 7"
+        strokeLinecap="round"
+      />
+      <circle cx="24" cy="128" r="4" fill="var(--color-accent-400)" />
+      <circle cx="304" cy="110" r="4" fill="none" stroke="var(--color-accent-400)" strokeWidth="2" />
+    </svg>
+  );
+}
+
+/** Sidebar card listing the suburbs we service, with a quick "do you cover me?" check. */
+export function ServiceAreasCard() {
+  const { settings } = useSettings();
+  const waLink = useWhatsApp();
+  const [query, setQuery] = useState('');
+  const areas = settings.serviceAreas || [];
+  if (!areas.length) return null;
+
+  const q = query.trim().toLowerCase();
+  const matches = q ? areas.filter((a) => a.toLowerCase().includes(q)) : areas;
+  const exact = q && areas.find((a) => a.toLowerCase() === q);
+  const askLink = waLink(
+    `Hello, do you provide painting services in ${query.trim() || 'my area'}? I'd like to get a quote.`,
+  );
+
+  return (
+    <div className="card overflow-hidden">
+      {/* Header: map-style banner */}
+      <div className="relative isolate overflow-hidden bg-gradient-to-br from-navy-800 via-navy-900 to-navy-950 px-6 pt-6 pb-12 text-white">
+        <MapPattern />
+        <span className="absolute top-5 right-6 flex size-11 items-center justify-center" aria-hidden="true">
+          <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-500/40" />
+          <span className="relative inline-flex size-11 items-center justify-center rounded-full bg-accent-600 shadow-lift ring-4 ring-white/10">
+            <MapPin className="size-5" />
+          </span>
+        </span>
+        <p className="relative text-[11px] font-bold tracking-[0.16em] text-accent-300 uppercase">We come to you</p>
+        <h2 className="relative mt-1 text-xl font-semibold text-white">Areas we service</h2>
+        <p className="relative mt-1.5 max-w-[16rem] text-sm leading-relaxed text-navy-200">
+          <span className="font-semibold text-white">{areas.length} suburbs</span> covered with free on-site quotes.
+        </p>
+      </div>
+
+      <div className="p-6">
+        {/* Suburb check */}
+        <label htmlFor="suburb-check" className="text-sm font-semibold text-navy-900">
+          Do we cover your suburb?
+        </label>
+        <div className="relative mt-2">
+          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-navy-400" aria-hidden="true" />
+          <input
+            id="suburb-check"
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Type your suburb…"
+            autoComplete="address-level2"
+            className="w-full rounded-xl border border-navy-200 bg-navy-50/60 py-2.5 pr-3 pl-10 text-sm text-navy-900 transition placeholder:text-navy-400 focus:border-accent-500 focus:bg-white focus:ring-4 focus:ring-accent-100 focus:outline-none"
+          />
+        </div>
+
+        <div aria-live="polite" className="min-h-0">
+          {q && (matches.length > 0 ? (
+            <p className="anim-pop mt-3 flex items-start gap-2 rounded-xl bg-emerald-50 px-3.5 py-2.5 text-sm text-emerald-800 ring-1 ring-emerald-100">
+              <CircleCheck className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden="true" />
+              <span>
+                {exact ? (
+                  <>Great news, we service <strong>{exact}</strong>!</>
+                ) : (
+                  <>Good news, we cover {matches.length === 1 ? <strong>{matches[0]}</strong> : `${matches.length} matching suburbs`}.</>
+                )}
+              </span>
+            </p>
+          ) : (
+            <div className="anim-pop mt-3 rounded-xl bg-accent-50 px-3.5 py-3 text-sm text-navy-700 ring-1 ring-accent-100">
+              <p>
+                <strong className="text-navy-900">{query.trim()}</strong> isn&apos;t on our list, but get in touch and we&apos;ll let you know if we can help.
+              </p>
+              {askLink && (
+                <a
+                  href={askLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-1.5 font-semibold text-accent-600 hover:underline"
+                >
+                  <WhatsAppIcon className="size-4" aria-hidden="true" />
+                  Ask us about {query.trim()}
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Suburb tags */}
+        <ul className="mt-5 grid grid-cols-2 gap-2">
+          {areas.map((area, i) => {
+            const hit = q && matches.includes(area);
+            const dim = q && !hit;
+            return (
+              <li
+                key={area}
+                style={{ '--i': i, animationDelay: `${i * 60}ms` }}
+                className={cn(
+                  'anim-pop group flex min-w-0 cursor-default items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold ring-1 transition duration-300',
+                  hit
+                    ? 'bg-accent-600 text-white shadow-soft ring-accent-600'
+                    : 'bg-white text-navy-800 ring-navy-100 hover:-translate-y-0.5 hover:bg-accent-50 hover:ring-accent-200',
+                  dim && 'opacity-40',
+                )}
+              >
+                <MapPin className={cn('anim-pin size-4 shrink-0', hit ? 'text-white' : 'text-accent-600')} aria-hidden="true" />
+                <span className="truncate">{area}</span>
+              </li>
+            );
+          })}
+        </ul>
+
+        {/* Footer note */}
+        <div className="mt-5 flex items-center gap-3 rounded-xl border border-dashed border-navy-200 px-4 py-3">
+          <Car className="size-5 shrink-0 text-navy-400" aria-hidden="true" />
+          <p className="text-xs leading-relaxed text-navy-600">
+            Live nearby? <span className="font-semibold text-navy-900">Just ask</span>, we&apos;re happy to check.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
