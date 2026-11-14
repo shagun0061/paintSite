@@ -38,8 +38,14 @@ export const BUSINESS = {
   ],
 
   // From your Google Business Profile: "Share" link and "Ask for reviews" link.
-  googleMapsUrl: '',
+  googleMapsUrl: 'https://share.google/AE9DbCZAdVnr0W2gG',
   googleReviewUrl: '',
+  // Live Google reviews (needs VITE_GOOGLE_MAPS_API_KEY in .env — see README).
+  // googlePlaceId is best (one fewer API call per visit). Until it's set, the site
+  // finds the profile by searching for googlePlaceSearch and, in dev, logs the
+  // Place ID to the browser console so you can paste it here.
+  googlePlaceId: '',
+  googlePlaceSearch: 'Anant Painting & Coating, Melbourne VIC',
   // Optional: Google Maps → Share → Embed a map → copy only the src="…" URL.
   googleMapsEmbedUrl: '',
 

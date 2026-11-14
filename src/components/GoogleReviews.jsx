@@ -1,7 +1,12 @@
 import { ExternalLink, PenLine } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext.jsx';
+import { useGoogleReviews } from '../hooks/useGoogleReviews.js';
+import { GoogleReviewCard } from './GoogleReviewCard.jsx';
 import { Button } from './ui/Button.jsx';
 import { GoogleIcon } from './ui/Icons.jsx';
+import { Reveal } from './ui/Reveal.jsx';
+import { StarRating } from './ui/StarRating.jsx';
+import { SkeletonCards } from './ui/States.jsx';
 
 /** Profile link: the configured URL, else a Google Maps search for the business. */
 export function useGoogleLinks() {
@@ -28,6 +33,64 @@ export function GoogleReviewButtons({ light = false, size = 'md' }) {
           Review Us on Google
         </Button>
       )}
+    </div>
+  );
+}
+
+/** "4.9 ★★★★★ from 23 Google reviews" */
+export function GoogleRatingSummary({ data }) {
+  if (data.rating == null) return null;
+  return (
+    <a
+      href={data.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex flex-wrap items-center gap-2 text-navy-700 hover:underline"
+    >
+      <GoogleIcon className="size-5" />
+      <span className="text-2xl font-bold text-navy-900">{data.rating.toFixed(1)}</span>
+      <StarRating value={data.rating} />
+      <span>
+        from {data.total} Google review{data.total === 1 ? '' : 's'}
+      </span>
+    </a>
+  );
+}
+
+/**
+ * Live Google reviews grid. Renders `fallback` when the API key isn't set or
+ * loading fails, so the site never shows a broken section.
+ */
+export function LiveGoogleReviews({ limit, fallback = null, showSummary = true, animate = false, wrap = (c) => c }) {
+  const state = useGoogleReviews();
+
+  if (state.status === 'loading') return wrap(<SkeletonCards count={limit ?? 3} className="h-24" />);
+  if (state.status !== 'ready' || !state.data.reviews.length) return fallback;
+
+  const { data } = state;
+  const reviews = limit ? data.reviews.slice(0, limit) : data.reviews;
+
+  return wrap(
+    <div>
+      {showSummary && (
+        <div className="mb-8">
+          <GoogleRatingSummary data={data} />
+        </div>
+      )}
+      <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {reviews.map((r, i) =>
+          animate ? (
+            <Reveal as="li" key={`${r.author}-${i}`} delay={i * 80}>
+              <GoogleReviewCard review={r} />
+            </Reveal>
+          ) : (
+            <li key={`${r.author}-${i}`}>
+              <GoogleReviewCard review={r} />
+            </li>
+          ),
+        )}
+      </ul>
+      <p className="mt-6 text-right text-xs text-navy-500">Reviews powered by Google</p>
     </div>
   );
 }

@@ -50,6 +50,18 @@ In your Google Business Profile:
 
 If `googleMapsUrl` is empty, the "Read Google Reviews" button falls back to a Google Maps search for your business name.
 
+### Live Google reviews
+
+The Home and Reviews pages can show your star rating and up to 5 reviews, loaded live from Google. To turn this on:
+
+1. In [Google Cloud Console](https://console.cloud.google.com/), create a project and turn on billing. Google's monthly free usage normally covers a small business site.
+2. Enable **Maps JavaScript API** and **Places API (New)**.
+3. Under **Credentials**, create an API key. Restrict it to **Websites** (your domain, e.g. `https://yourdomain.com/*`, plus `http://localhost:5173/*` for testing), and to the two APIs above.
+4. Put the key in `.env` as `VITE_GOOGLE_MAPS_API_KEY=…`. On Vercel, add it under Project → Settings → Environment Variables and redeploy.
+5. Run the site locally and open the browser console. It logs your **Place ID**. Paste it into `googlePlaceId` in `business.js`, which saves one API call per visit.
+
+Without a key, or if Google can't be reached, the site shows the "Read our reviews on Google" buttons instead.
+
 ### Adding your own photos
 
 1. Put photos in `public/images/` (for example `public/images/projects/kitchen-after.jpg`). Resize them to about 1600 px wide and compress them first. Tools like squoosh.app work well.

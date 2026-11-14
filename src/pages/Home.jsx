@@ -1,6 +1,6 @@
 import { ArrowRight, Check, MapPin, PaintRoller } from 'lucide-react';
 import { CtaSection } from '../components/CtaSection.jsx';
-import { GoogleReviewButtons } from '../components/GoogleReviews.jsx';
+import { GoogleReviewButtons, LiveGoogleReviews } from '../components/GoogleReviews.jsx';
 import { Seo } from '../components/layout/Seo.jsx';
 import { ProjectCard } from '../components/ProjectCard.jsx';
 import { ReviewCard } from '../components/ReviewCard.jsx';
@@ -280,7 +280,10 @@ function ReviewsPreview() {
           {items.length > 0 && <GoogleReviewButtons />}
         </Reveal>
         <div className="mt-12">
-          {items.length === 0 ? (
+          <LiveGoogleReviews
+            limit={3}
+            animate
+            fallback={items.length === 0 ? (
             <EmptyState title="Read our reviews on Google" action={<GoogleReviewButtons />}>
               See what customers say about us on our Google Business Profile.
             </EmptyState>
@@ -300,6 +303,7 @@ function ReviewsPreview() {
               </div>
             </>
           )}
+          />
         </div>
       </div>
     </section>

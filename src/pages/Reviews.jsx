@@ -1,4 +1,4 @@
-import { GoogleReviewsSection } from '../components/GoogleReviews.jsx';
+import { GoogleReviewsSection, LiveGoogleReviews } from '../components/GoogleReviews.jsx';
 import { Seo } from '../components/layout/Seo.jsx';
 import { PageHero } from '../components/PageHero.jsx';
 import { ReviewCard } from '../components/ReviewCard.jsx';
@@ -27,9 +27,23 @@ export default function Reviews() {
         breadcrumb={[{ label: 'Reviews' }]}
       />
 
-      <div className={cn('container-page relative z-10 -mt-10 sm:-mt-14', !TESTIMONIALS.length && 'pb-16 sm:pb-24')}>
+      <div className="container-page relative z-10 -mt-10 sm:-mt-14">
         <GoogleReviewsSection />
       </div>
+
+      <LiveGoogleReviews
+        fallback={!TESTIMONIALS.length && <div className="pb-16 sm:pb-24" />}
+        wrap={(content) => (
+          <section className={cn('section', TESTIMONIALS.length && 'pb-0 sm:pb-0')} aria-labelledby="google-reviews-list-title">
+            <div className="container-page">
+              <h2 id="google-reviews-list-title" className="mb-6 text-3xl font-semibold">
+                Recent Google reviews
+              </h2>
+              {content}
+            </div>
+          </section>
+        )}
+      />
 
       {TESTIMONIALS.length > 0 && (
         <section className="section" aria-labelledby="testimonials-title">
