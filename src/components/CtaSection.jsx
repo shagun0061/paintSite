@@ -34,11 +34,14 @@ export function CtaSection({
               )}
             </div>
             {settings.phone && (
-              <p className="mt-6 text-navy-200">
-                or call {' '}
-                <a href={telHref(settings.phone)} className="inline-flex items-center gap-1.5 font-semibold text-white hover:text-accent-300">
-                  <Phone className="size-4" aria-hidden="true" />
-                  {settings.phone}
+              <p className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm text-navy-200">
+                <span>Prefer to talk?</span>
+                <a
+                  href={telHref(settings.phone)}
+                  className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 font-semibold text-white ring-1 ring-white/20 transition hover:bg-white/15 hover:ring-white/40"
+                >
+                  <Phone className="size-4 text-accent-400" aria-hidden="true" />
+                  Call {settings.phone}
                 </a>
               </p>
             )}
