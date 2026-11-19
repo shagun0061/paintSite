@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { ArrowRight, Car, CircleCheck, Clock, ExternalLink, Mail, MapPin, MessageSquareText, Search } from 'lucide-react';
+import { ArrowRight, Car, Clock, ExternalLink, Mail, MapPin, MessageSquareText } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext.jsx';
 import { useWhatsApp } from '../hooks/useWhatsApp.js';
 import { cn } from '../utils/cn.js';
@@ -235,20 +234,11 @@ function MapPattern() {
   );
 }
 
-/** Sidebar card listing the suburbs we service, with a quick "do you cover me?" check. */
+/** Sidebar card listing the regions we service. */
 export function ServiceAreasCard() {
   const { settings } = useSettings();
-  const waLink = useWhatsApp();
-  const [query, setQuery] = useState('');
   const areas = settings.serviceAreas || [];
   if (!areas.length) return null;
-
-  const q = query.trim().toLowerCase();
-  const matches = q ? areas.filter((a) => a.toLowerCase().includes(q)) : areas;
-  const exact = q && areas.find((a) => a.toLowerCase() === q);
-  const askLink = waLink(
-    `Hello, do you provide painting services in ${query.trim() || 'my area'}? I'd like to get a quote.`,
-  );
 
   return (
     <div className="card overflow-hidden">
@@ -264,82 +254,23 @@ export function ServiceAreasCard() {
         <p className="relative text-[11px] font-bold tracking-[0.16em] text-accent-300 uppercase">We come to you</p>
         <h2 className="relative mt-1 text-xl font-semibold text-white">Areas we service</h2>
         <p className="relative mt-1.5 max-w-[16rem] text-sm leading-relaxed text-navy-200">
-          <span className="font-semibold text-white">{areas.length} suburbs</span> covered with free on-site quotes.
+          Free on-site quotes across <span className="font-semibold text-white">{areas.join(' & ')}</span>.
         </p>
       </div>
 
       <div className="p-6">
-        {/* Suburb check */}
-        <label htmlFor="suburb-check" className="text-sm font-semibold text-navy-900">
-          Do we cover your suburb?
-        </label>
-        <div className="relative mt-2">
-          <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-navy-400" aria-hidden="true" />
-          <input
-            id="suburb-check"
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Type your suburb…"
-            autoComplete="address-level2"
-            className="w-full rounded-xl border border-navy-200 bg-navy-50/60 py-2.5 pr-3 pl-10 text-sm text-navy-900 transition placeholder:text-navy-400 focus:border-accent-500 focus:bg-white focus:ring-4 focus:ring-accent-100 focus:outline-none"
-          />
-        </div>
-
-        <div aria-live="polite" className="min-h-0">
-          {q && (matches.length > 0 ? (
-            <p className="anim-pop mt-3 flex items-start gap-2 rounded-xl bg-emerald-50 px-3.5 py-2.5 text-sm text-emerald-800 ring-1 ring-emerald-100">
-              <CircleCheck className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden="true" />
-              <span>
-                {exact ? (
-                  <>Great news, we service <strong>{exact}</strong>!</>
-                ) : (
-                  <>Good news, we cover {matches.length === 1 ? <strong>{matches[0]}</strong> : `${matches.length} matching suburbs`}.</>
-                )}
-              </span>
-            </p>
-          ) : (
-            <div className="anim-pop mt-3 rounded-xl bg-accent-50 px-3.5 py-3 text-sm text-navy-700 ring-1 ring-accent-100">
-              <p>
-                <strong className="text-navy-900">{query.trim()}</strong> isn&apos;t on our list, but get in touch and we&apos;ll let you know if we can help.
-              </p>
-              {askLink && (
-                <a
-                  href={askLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-1.5 font-semibold text-accent-600 hover:underline"
-                >
-                  <WhatsAppIcon className="size-4" aria-hidden="true" />
-                  Ask us about {query.trim()}
-                </a>
-              )}
-            </div>
+        {/* Area tags */}
+        <ul className="grid gap-2">
+          {areas.map((area, i) => (
+            <li
+              key={area}
+              style={{ '--i': i, animationDelay: `${i * 60}ms` }}
+              className="anim-pop group flex min-w-0 cursor-default items-center gap-2 rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-navy-800 ring-1 ring-navy-100 transition duration-300 hover:-translate-y-0.5 hover:bg-accent-50 hover:ring-accent-200"
+            >
+              <MapPin className="anim-pin size-4 shrink-0 text-accent-600" aria-hidden="true" />
+              <span className="truncate">{area}</span>
+            </li>
           ))}
-        </div>
-
-        {/* Suburb tags */}
-        <ul className="mt-5 grid grid-cols-2 gap-2">
-          {areas.map((area, i) => {
-            const hit = q && matches.includes(area);
-            const dim = q && !hit;
-            return (
-              <li
-                key={area}
-                style={{ '--i': i, animationDelay: `${i * 60}ms` }}
-                className={cn(
-                  'anim-pop group flex min-w-0 cursor-default items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold ring-1 transition duration-300',
-                  hit
-                    ? 'bg-accent-600 text-white shadow-soft ring-accent-600'
-                    : 'bg-white text-navy-800 ring-navy-100 hover:-translate-y-0.5 hover:bg-accent-50 hover:ring-accent-200',
-                  dim && 'opacity-40',
-                )}
-              >
-                <MapPin className={cn('anim-pin size-4 shrink-0', hit ? 'text-white' : 'text-accent-600')} aria-hidden="true" />
-                <span className="truncate">{area}</span>
-              </li>
-            );
-          })}
         </ul>
 
         {/* Footer note */}

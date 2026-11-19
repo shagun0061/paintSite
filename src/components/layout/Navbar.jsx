@@ -26,7 +26,7 @@ function TopBar() {
           {settings.serviceAreas?.length > 0 && (
             <span className="flex items-center gap-2">
               <MapPin className="size-4 text-accent-400" aria-hidden="true" />
-              Serving {settings.serviceAreas.slice(0, 3).join(', ')}
+              Serving {settings.serviceAreas.slice(0, 3).join(' & ')}
               {settings.serviceAreas.length > 3 && ' & nearby'}
             </span>
           )}

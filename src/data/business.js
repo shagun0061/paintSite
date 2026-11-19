@@ -30,7 +30,7 @@ export const BUSINESS = {
   },
   geo: { lat: null, lng: null }, // optional, improves local SEO
 
-  serviceAreas: ['Mulgrave', 'Glen Waverley', 'Wheelers Hill', 'Clayton', 'Springvale', 'Noble Park', 'Dandenong', 'Rowville'],
+  serviceAreas: ['South-East Melbourne', 'Melbourne Central'],
   workingHours: [
     { days: 'Monday – Friday', hours: '7:00 am – 5:00 pm' },
     { days: 'Saturday', hours: '8:00 am – 1:00 pm (by appointment)' },

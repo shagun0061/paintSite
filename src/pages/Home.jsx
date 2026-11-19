@@ -89,7 +89,7 @@ function Hero() {
           {settings.serviceAreas?.[0] && (
             <p className="mb-6 inline-flex animate-fade-up items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-sm font-semibold text-navy-700 shadow-soft ring-1 ring-beige-200">
               <MapPin className="size-4 text-accent-600" aria-hidden="true" />
-              Painters in {settings.serviceAreas[0]} & Melbourne's south-east
+              Painters in {settings.serviceAreas.join(' & ')}
             </p>
           )}
           <h1 className="animate-fade-up text-[2.6rem] [animation-delay:100ms] leading-[1.05] font-semibold text-navy-900 sm:text-6xl lg:text-[4.25rem]">

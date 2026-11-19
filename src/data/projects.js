@@ -33,20 +33,9 @@ const img = {
   frontStairsHouse: p('front-stairs-house.jpg', 'Three-storey rendered home with oiled timber entry stairs leading up from the driveway'),
   frontDoor: p('front-door-varnish.jpg', 'Timber front door with glass panels varnished to a high gloss'),
   fence: p('fence-charcoal.jpg', 'Garden fence painted charcoal with timber battens oiled in natural tones'),
-  renderedHouse: p('rendered-house-repaint.jpg', 'Painter rolling the rendered walls of a two-storey home'),
 };
 
 const PROJECTS_UNSORTED = [
-  {
-    slug: 'rendered-home-repaint',
-    title: 'Rendered Home Repaint',
-    category: 'Exterior',
-    summary: 'A two-storey rendered home repainted with a warm, weather-resistant exterior paint.',
-    description: 'The render was cleaned and prepared, then repainted with exterior acrylic, with the trims and fascia finished in a dark contrast.',
-    coverImage: img.renderedHouse,
-    gallery: [img.renderedHouse],
-    featured: true,
-  },
   {
     slug: 'red-tiled-roof-restoration',
     title: 'Tiled Roof Restoration',

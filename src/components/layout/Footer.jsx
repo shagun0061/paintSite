@@ -229,24 +229,19 @@ export function Footer() {
       {/* Service areas */}
       {settings.serviceAreas?.length > 0 && (
         <div className="container-page">
-          <div className="flex flex-col gap-3 border-t border-white/10 py-7 sm:flex-row sm:items-baseline sm:gap-6">
-            <p className="flex shrink-0 items-center gap-2 text-[13px] font-bold tracking-[0.14em] text-white uppercase">
-              <MapPin className="anim-pin size-4 text-accent-400" aria-hidden="true" />
-              Areas we serve
-            </p>
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 leading-relaxed text-navy-300">
+          <p className="flex items-start gap-2.5 border-t border-white/10 py-7 leading-relaxed text-navy-300">
+            <MapPin className="anim-pin mt-1 size-4 shrink-0 text-accent-400" aria-hidden="true" />
+            <span>
+              Proudly serving{' '}
               {settings.serviceAreas.map((a, i) => (
-                <li
-                  key={a}
-                  className="group inline-flex cursor-default items-center gap-1.5 whitespace-nowrap transition-colors hover:text-white"
-                  style={{ '--i': i }}
-                >
-                  <MapPin className="anim-pin size-4 shrink-0 text-accent-400" aria-hidden="true" />
-                  {a}
-                </li>
+                <span key={a}>
+                  {i > 0 && (i === settings.serviceAreas.length - 1 ? ' and ' : ', ')}
+                  <span className="font-semibold text-white">{a}</span>
+                </span>
               ))}
-            </ul>
-          </div>
+              .
+            </span>
+          </p>
         </div>
       )}
 
